@@ -51,16 +51,84 @@ function createDomElements(data) {
   });
 }
 
-//
-// window.setInterval(() => {
-//   let todos = [];
-//   for (let i = 0; i<Math.floor(Math.random() * 100); i++) {
-//     todos.push({
-//       title: "Go to gym",
-//       description: "Go to gym form 5",
-//       id: i+1
-//     })
-//   }
-//
-//   createDomElements(todos)
-// }, 1000)
+function updateDomTree(data)
+{
+  var parentElement = document.getElementById("mainArea");
+  var children = Array.from(parentElement.children);
+
+  var currentIds = [];
+  children.forEach(child => {
+    currentIds.push(child.dataset.id)
+  });
+
+  var currentSet = new Set(currentIds);
+  var newSet = new Set(data.map(todo => todo.id));
+  
+  //Creation list is elements in new set that are not in current DOM
+  //Updation list is elements that are present in both sets
+  //Removal list is elements in current DOM that are not in new set
+  var creationList = [...newSet].filter(newId => !currentSet.has(newId));
+  var updationList = [...currentSet].filter(currentId => newSet.has(currentId));
+  var deletionList = [...currentSet].filter(currentId => !newSet.has(currentId));
+
+  //Update elements that are already present in the current DOM
+  updationList.forEach(id => {
+    var childElement = document.querySelector(`[data-id='${id}'`);
+
+    childElement.children[0].innerHTML = data[id-1].title;
+    childElement.children[1].innerHTML = data[id-1].description;
+  });
+
+  //Create elements that aren't present in current DOM
+  var fragment = new DocumentFragment();
+
+  creationList.forEach(id => {
+     var childElement = document.createElement("div");
+     childElement.dataset.id = id; // Store the ID on the element for future lookups
+
+     var grandChildElement1 = document.createElement("span");
+     grandChildElement1.innerHTML = data[id-1].title;
+
+     var grandChildElement2 = document.createElement("span");
+     grandChildElement2.innerHTML = data[id-1].description
+
+     var grandChildElement3 = document.createElement("button");
+     grandChildElement3.innerHTML = "Delete"
+     grandChildElement3.setAttribute("onclick", "deleteTodo(" + id + ")")
+
+     childElement.appendChild(grandChildElement1)
+     childElement.appendChild(grandChildElement2)
+     childElement.appendChild(grandChildElement3)
+     fragment.appendChild(childElement);
+  });
+  //Append the fragment to the parent div now
+  parentElement.appendChild(fragment);
+
+  //Remove elements that aren't present in new list
+  deletionList.forEach(id => {
+    var childElement = document.querySelector(`[data-id='${id}'`);
+    parentElement.removeChild(childElement);
+  });
+
+}
+
+
+window.setInterval(() => {
+  let todos = [];
+
+  var numberOfTodos = Math.floor(Math.random() * 100);
+  console.log(`# of TODOS : ${numberOfTodos}`);
+
+  for (let i = 0; i < numberOfTodos; i++) {
+    todos.push({
+      title: `Title : ${i+1}`,
+      description: ` Description : ${i+1}`,
+      id: i+1
+    })
+  }
+
+  console.time("reconciler");
+  updateDomTree(todos);
+  //createDomElements(todos);
+  console.timeEnd("reconciler");
+}, 5000)
