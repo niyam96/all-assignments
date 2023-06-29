@@ -49,6 +49,8 @@ app.post('/admin/login', readFileMiddleware("ADMINS"), authenticateUser("ADMINS"
 });
 
 app.post('/admin/courses', readFileMiddleware("ADMINS"), authorizeUser("ADMINS"), async (req, res) => {
+  await populateListFromFile("COURSES");
+  
   var courseId = COURSES.length;
   var courseDetails = {
     "id": courseId,
@@ -58,8 +60,6 @@ app.post('/admin/courses', readFileMiddleware("ADMINS"), authorizeUser("ADMINS")
     "imageLink": req.body.imageLink,
     "published": req.body.published
   };
-
-  await populateListFromFile("COURSES");
 
   COURSES.push(courseDetails);
 
@@ -180,7 +180,6 @@ function authenticateUser(userListName)
   return (req, res, next) => {
     
     var userList = getListFromName(userListName);
-    console.log(userList);
 
     var uname = req.headers.username;
     var password = req.headers.password;
@@ -246,7 +245,6 @@ async function populateListFromFile(listToPopulate) {
       case "ADMINS":
         filePath = ADMINS_FILE;
         ADMINS = await readDataFromFile(filePath);
-        console.log(ADMINS);
         break;
       case "USERS":
         filePath = USERS_FILE;
