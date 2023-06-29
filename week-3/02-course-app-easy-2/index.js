@@ -160,7 +160,7 @@ function authenticateUser(userList)
     if(user.password !== password)
       return res.status(401).send(`Login failed for user : ${uname}`);
 
-    var token = generateJsonWebToken(username);
+    var token = generateJsonWebToken(user.username);
     req.loginToken = token;
 
     return next();
