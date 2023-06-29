@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const { promises: fs, read } = require('fs');
+const { promises: fs } = require('fs');
 const app = express();
 
 app.use(express.json());
@@ -12,6 +12,8 @@ let COURSES = [];
 ADMINS_FILE = "./files/admins.json";
 USERS_FILE = "./files/users.json";
 COURSES_FILE = "./files/courses.json";
+
+initializeFiles();
 
 // Admin routes
 let TOKEN_SECRET = "CourseSellingWebsite";
@@ -301,4 +303,25 @@ async function writeDataToFile(filePath, listToWrite) {
   catch (err) {
     console.log(err);
   }
+}
+
+function initializeFiles()
+{
+  fs.readFile(ADMINS_FILE).catch(() =>{
+    fs.mkdir("./files")
+    .then(x => fs.writeFile(ADMINS_FILE, "[]"))
+    .catch(x => fs.writeFile(ADMINS_FILE, "[]"));
+  });
+
+  fs.readFile(USERS_FILE).catch(() =>{
+    fs.mkdir("./files")
+    .then(x => fs.writeFile(USERS_FILE, "[]"))
+    .catch(x => fs.writeFile(USERS_FILE, "[]"))
+  });
+
+  fs.readFile(COURSES_FILE).catch(() =>{
+    fs.mkdir("./files")
+    .then(x => fs.writeFile(COURSES_FILE, "[]"))
+    .catch(x => fs.writeFile(COURSES_FILE, "[]"));
+  });
 }
