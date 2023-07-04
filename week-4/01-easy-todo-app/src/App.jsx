@@ -11,7 +11,11 @@ function App() {
   const [todos, setTodos] = useState([])
   // fetch all todos from server
 
-  fetchTodos();
+  React.useEffect(() => {
+    setInterval(() => {
+      fetchTodos();
+    }, 500)
+  },[])
 
   function fetchTodos(){
     axios.get(baseURL + "todos").then((response) => {
@@ -21,7 +25,6 @@ function App() {
 
   function handleDelete(todoId){
     axios.delete(baseURL + `todos/${todoId}`).then();
-    fetchTodos();
   };
 
   function createTodo(event)
