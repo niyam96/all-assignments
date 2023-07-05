@@ -63,13 +63,6 @@ function App() {
   )
 }
 
-function Todo(props) {
-  // Add a delete button here so user can delete a TODO.
-  return <div>
-    {props.title}
-  </div>
-}
-
 function TodoList(props) {
   var todos = props.todos;
   var todoList = todos.map(todo =>
@@ -91,10 +84,5 @@ function TodoList(props) {
   </div>
 }
 
-function deleteTodo(id)
-{
-  this.App.useState(this.App.state);
-  
-}
 
 export default App
