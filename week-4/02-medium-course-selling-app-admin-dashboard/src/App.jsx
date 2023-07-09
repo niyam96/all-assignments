@@ -4,7 +4,8 @@ import Landing from "./components/Landing";
 import CreateCourse from './components/CreateCourse';
 import Register from './components/Register';
 import ShowCourses from './components/ShowCourses';
-import TokenExpirationProvider from './services/TokenExpirationProvider';
+import PrivateRoute from './components/PrivateRoute';
+import AppNavbar from './components/Navbar';
 
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
@@ -13,15 +14,17 @@ import TokenExpirationProvider from './services/TokenExpirationProvider';
 function App() {
     return (
         <Router>
-            <TokenExpirationProvider>
-                <Routes>
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/about" element={<CreateCourse />} />
+            <AppNavbar />
+            <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Register />} />
+
+                <Route path="/" element={<PrivateRoute />}>
+                    <Route path="/createCourse" element={<CreateCourse />} />
                     <Route path="/courses" element={<ShowCourses />} />
-                </Routes>
-            </TokenExpirationProvider>
+                </Route>
+            </Routes>
         </Router>
     );
 }

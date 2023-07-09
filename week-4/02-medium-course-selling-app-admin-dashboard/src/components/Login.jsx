@@ -8,7 +8,7 @@ function Login() {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [loginStatus, setLoginStatus] = React.useState("");
-    const {adminLogin, logout} = useAuthService();
+    const { adminLogin } = useAuthService();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -25,16 +25,20 @@ function Login() {
 
             navigate('/courses');
         }
-        catch (err) {
-            console.log(err);
-            setLoginStatus("Login Failed");
+        catch (error) {
+            setLoginStatus(`${error.response.data ? error.response.data : "Login Failed"}`);
         }
     };
 
     return <Container>
         <Row>
             <Col md={{ span: 6, offset: 3 }} className='my-4'>
-                <Form onSubmit={handleSubmit}>
+                <h1 className="text-center">Login</h1>
+            </Col>
+        </Row>
+        <Row>
+            <Col md={{ span: 6, offset: 3 }} className='my-4'>
+                <Form onSubmit={(event) => handleSubmit(event)}>
                     <Form.Group className="mb-3" controlId="loginEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control required type="email" placeholder="Enter email"
@@ -47,11 +51,18 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)} />
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="loginStatus">
+                    { location.state ? <><Form.Group className="mb-3" controlId="loginStatus">
                         <Form.Label className='text-danger'>
-                            {location.state ? location.state.loginStatus : loginStatus}
+                            {location.state.loginStatus}
                         </Form.Label>
-                    </Form.Group>
+                    </Form.Group></> : <></> }
+                    
+                    {loginStatus ? <Form.Group className="mb-3" controlId="loginStatus">
+                        <Form.Label className='text-danger'>
+                            {loginStatus}
+                        </Form.Label>
+                    </Form.Group> : <></> }
+
 
                     <Button variant="primary" type="submit">
                         Submit

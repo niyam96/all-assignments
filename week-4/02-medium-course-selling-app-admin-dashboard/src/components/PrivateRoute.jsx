@@ -1,17 +1,18 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useCookies } from 'react-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 
-const TokenExpirationProvider = ({ children }) => {
-    const [cookies, , removeCookie] = useCookies(['token']);
+const PrivateRoute = () => {
+    const [cookies, , removeCookie] = useCookies(['token', 'loggedinuser']);
     const navigate = useNavigate();
     const [interceptorReady, setInterceptorReady] = useState(false);
 
     useEffect(() => {
         const handleTokenExpiration = () => {
             removeCookie('token');
-            navigate('/login', { state: { loginStatus: "Token expired. Please relogin" }});
+            removeCookie('loggedinuser');
+            navigate('/login', { state: { loginStatus: "Session expired. Please relogin" }});
         };
 
         const apiRequestInterceptor = axios.interceptors.request.use(config => {
@@ -45,7 +46,10 @@ const TokenExpirationProvider = ({ children }) => {
     //component renders twice, and somehow this causes the interceptor to not working on first request
     //to get all courses and that returns a 401 response
 
-    return interceptorReady && children;
-};
+    if(interceptorReady)
+        return <Outlet />;
+    else
+        return <p>Loading...</p>;
+}
 
-export default TokenExpirationProvider;
+export default PrivateRoute;

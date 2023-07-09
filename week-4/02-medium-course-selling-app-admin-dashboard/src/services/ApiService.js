@@ -11,6 +11,15 @@ const ApiService = {
         } catch (err) {
             console.log(err.message);
         }
+    },
+
+    adminCreateCourse: async(courseDetails) => {
+        try {
+            var response = await axios.post(API_BASE_URL + '/admin/courses', courseDetails);
+            return response.data;
+        } catch (err) {
+            console.log(err.message);
+        }
     }
 };
 

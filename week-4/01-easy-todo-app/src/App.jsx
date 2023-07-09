@@ -43,7 +43,7 @@ function App() {
     <>
       <div id="todoApp">
         <div className="row">
-          <form onSubmit={createTodo} id="createTodoForm" className="mx-auto my-4 col-6 border p-4">
+          <form onSubmit={() => createTodo()} id="createTodoForm" className="mx-auto my-4 col-6 border p-4">
             <div className="mb-3">
               <label htmlFor="todoFormTitle" className="form-label">Todo Title</label>
               <input type="text" className="form-control" id="todoFormTitle"></input>
