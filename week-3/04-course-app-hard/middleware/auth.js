@@ -43,7 +43,7 @@ function authorizeUser(userType){
     jwt.verify(token, config.JWT_TOKEN_SECRET, async (err, loggedInUser) => {
       if(err){
         console.log(err);
-        return res.status(403).send(err);
+        return res.status(401).send(err.message);
       }
 
       var user;

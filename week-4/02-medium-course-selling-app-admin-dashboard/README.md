@@ -1,3 +1,5 @@
+ChatGpt Conversation : https://chat.openai.com/share/561aaf73-d608-402f-b6e3-3fb0a1001f74
+
 
 ### Create the frontend for the ADMIN DASHBOARD for a course selling app
 
