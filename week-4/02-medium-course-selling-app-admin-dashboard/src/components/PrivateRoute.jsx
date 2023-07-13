@@ -46,10 +46,10 @@ const PrivateRoute = () => {
     //component renders twice, and somehow this causes the interceptor to not working on first request
     //to get all courses and that returns a 401 response
 
-    if(interceptorReady)
+    if(interceptorReady && cookies.token)
         return <Outlet />;
     else
-        return <p>Loading...</p>;
+        navigate('/login', { state: { loginStatus: "Please login/relogin" }});
 }
 
 export default PrivateRoute;
