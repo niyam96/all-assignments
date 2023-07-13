@@ -13,13 +13,21 @@ const ApiService = {
         }
     },
 
-    adminCreateCourse: async(courseDetails) => {
-        try {
-            var response = await axios.post(API_BASE_URL + '/admin/courses', courseDetails);
-            return response.data;
-        } catch (err) {
-            console.log(err.message);
-        }
+    adminCreateCourse: async (courseDetails) => {
+        var response = await axios.post(API_BASE_URL + '/admin/courses', courseDetails);
+        return response.data;
+    },
+
+    adminUpdateCourse: async (courseDetails) => {
+        var response = await axios.put(API_BASE_URL +
+            `/admin/courses/${courseDetails.id}`, courseDetails);
+        return response.data;
+    },
+
+    adminDeleteCourse: async (courseId) => {
+        var response = await axios.delete(API_BASE_URL +
+            `/admin/courses/${courseId}`);
+        return response.data;
     }
 };
 

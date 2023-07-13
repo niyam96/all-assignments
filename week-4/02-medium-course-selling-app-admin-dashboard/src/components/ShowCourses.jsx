@@ -22,10 +22,10 @@ function ShowCourses() {
             <Container>
                 <Row md={3} className="m-4 g-4">
                     <Col>
-                        <Button className="m-1" onClick={() => fetchCourses()}>
+                        <Button className="m-1 btn-success" onClick={() => fetchCourses()}>
                             <i className="bi bi-arrow-repeat"></i>Refresh
                         </Button>
-                        <Button className="m-1" onClick={() => navigate('/createCourse')}>
+                        <Button className="m-1 btn-success" onClick={() => navigate('/createCourse')}>
                             <i className="bi bi-plus"></i>Create Course
                         </Button>
                     </Col>
@@ -33,7 +33,7 @@ function ShowCourses() {
                 <Row md={3} className="m-4 g-4">
                     {courses.map(course => {
                         return (<Col key={course._id}>
-                            <Course courseDetails={course} />
+                            <Course courseDetails={course} fetchCourses={fetchCourses} />
                         </Col>);
                     })}
                 </Row>
@@ -55,7 +55,14 @@ function ShowCourses() {
 
 function Course(props) {
     var course = props.courseDetails;
-    return <Card className={!course.published ? "opacity-50" : ""}>
+    const navigate = useNavigate();
+
+    const deleteCourse = async (id) => {
+        await ApiService.adminDeleteCourse(id);
+        await props.fetchCourses();
+    }
+
+    return <Card>
         <Card.Body>
             <Card.Title>{course.title}</Card.Title>
             <Card.Text>
@@ -65,6 +72,14 @@ function Course(props) {
         <Card.Footer>
             <h5>Price : {course.price}</h5>
             <h6>Published : {course.published ? "Yes" : "No"}</h6>
+            <Button
+                onClick={() => navigate('/updateCourse', { state: { courseDetails: course } })}>
+                <i className="bi bi-pen"></i>Update
+            </Button>
+            <Button className="m-1 btn-danger"
+            onClick={() => deleteCourse(course._id)}>
+                <i className="bi bi-trash"></i>Delete
+            </Button>
         </Card.Footer>
     </Card>
 }

@@ -1,6 +1,7 @@
 const Admin = require('../models/Admin');
 const Course = require('../models/Course');
 const { generateJsonWebToken: generateJsonWebToken } = require('../middleware/auth');
+const mongoose = require('mongoose');
 
 module.exports.adminSignup = async (req, res) => {
     var username = req.body.username;
@@ -46,4 +47,10 @@ module.exports.adminUpdateCourse = async (req, res) => {
 module.exports.adminGetAllCourses = async (req, res) => {
     var courseList = await Course.find({}).exec();
     return res.status(200).send(courseList);
+};
+
+module.exports.adminDeleteCourse = async (req, res) => {
+    var courseId = req.params.courseId;
+    await Course.deleteOne({"_id": new mongoose.Types.ObjectId(courseId)});
+    return res.status(200).send("Course deleted successfully");
 };

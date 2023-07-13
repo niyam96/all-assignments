@@ -12,7 +12,7 @@ const PrivateRoute = () => {
         const handleTokenExpiration = () => {
             removeCookie('token');
             removeCookie('loggedinuser');
-            navigate('/login', { state: { loginStatus: "Session expired. Please relogin" }});
+            navigate('/login', { state: { loginStatus: "Please login/relogin" }});
         };
 
         const apiRequestInterceptor = axios.interceptors.request.use(config => {

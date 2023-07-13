@@ -6,6 +6,7 @@ import Register from './components/Register';
 import ShowCourses from './components/ShowCourses';
 import PrivateRoute from './components/PrivateRoute';
 import AppNavbar from './components/Navbar';
+import UpdateCourse from './components/UpdateCourse';
 
 // This file shows how you can do routing in React.
 // Try going to /login, /register, /about, /courses on the website and see how the html changes
@@ -22,6 +23,7 @@ function App() {
 
                 <Route path="/" element={<PrivateRoute />}>
                     <Route path="/createCourse" element={<CreateCourse />} />
+                    <Route path="/updateCourse" element={<UpdateCourse />} />
                     <Route path="/courses" element={<ShowCourses />} />
                 </Route>
             </Routes>
